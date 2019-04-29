@@ -1,14 +1,19 @@
-require "deck_helper"
+require_relative "deck_helper"
 
 class Deck
   include DeckHelper
-
+  attr_reader :deck
   def initialize
-    deck = mix_deck
+    @deck = []
+    @deck = Deck.mix_deck
   end
 
   # метод рандомайзер
-  def mix_deck
-    deck = Spades.concat(Hearts, Clubs, Diamonds).shuffle
+  def self.mix_deck
+    Spades.concat(Hearts, Clubs, Diamonds).shuffle
   end
 end
+
+# For testing
+# d = Deck.new
+# puts d.deck
