@@ -41,32 +41,53 @@ class Menu
     # puts @separator
     # with_separator(cards_in_hand(@dealer))
     # print "\n"
-
-    puts 'Выберите действие:'
-    @select_item.each do |key, value|
-      puts "#{key} -> #{value}"
-    end
+  
+    show_menu
 
     loop do
       choise = gets.chomp
       case choise
       when "1"
-        user_move(1)
-        main_info
+        if points(@user) < 17
+          user_move(1)
+          main_info
+          puts "Ход дилера."
+          if points(@dealer) < 17
+            dealer_move(1)
+            main_info
+          else
+            separator
+            puts "У дилера достаточно карт."
+            main_info
+          end
+        else
+          separator
+          puts "Достаточно!"
+          puts "Ход дилера."
+          if points(@dealer) < 17
+            dealer_move(1)
+            main_info
+          else
+            puts "У дилера достаточно карт."
+            main_info
+          end
+          show_menu
+        end
       when "2"
         dealer_move(1)
         main_info
       when "3"
         puts 'Карты дилера:'
         separator
-        with_separator(cards_in_hand(@dealer))
+        with_separator(cards_in_hand(@dealer, "show"))
         print "\n"
 
-        puts 'У Вас в руке:'
+        puts 'Ваши карты:'
         separator
         with_separator(cards_in_hand(@user))
         print "\n"
       when "4"
+        separator
         Menu.new.run
       when "5"
         puts 'Будем рады видеть Вас снова!'
@@ -86,6 +107,10 @@ class Menu
     separator
     with_separator(cards_in_hand(@user))
     print "\n"
+    puts 'Карты дилера:'
+    separator
+    with_separator(cards_in_hand(@dealer))
+    print "\n"
   end
 
   def with_separator(_method_name)
@@ -94,16 +119,35 @@ class Menu
     separator
   end
 
-  def cards_in_hand(user)
-    sum = 0
-    user.hand.each do |card, _index|
-      print "| #{card[:name]} | "
-      sum += card[:number]
+  def show_menu
+    puts 'Выберите действие:'
+    @select_item.each do |key, value|
+      puts "#{key} -> #{value}"
     end
-    print "сумма очков: #{sum}"
   end
 
-  def show_hand(user);end
+  def cards_in_hand(user, show_dealer = nil)
+    sum = 0
+    user.hand.each do |card, _index|
+      if show_dealer.nil?
+        print user == @user ? "| #{card[:name]} | " : "| * |"
+      else
+        print "| #{card[:name]} | "
+      end
+      sum += card[:number] if user == @user
+      sum += card[:number] unless show_dealer.nil?
+    end
+    print "сумма очков: #{sum}" if user == @user
+    print "сумма очков: #{sum}" unless show_dealer.nil?
+  end
+
+  def points(user)
+    sum = 0
+    user.hand.each do |card, _index|
+      sum += card[:number]
+    end
+    sum
+  end
 
   def dealer_move(num_of_cards)
     @dealer.take_card(num_of_cards, @current_deck)
