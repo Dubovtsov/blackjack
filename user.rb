@@ -15,4 +15,9 @@ class User
     end
     @current_hand
   end
+
+  def bet(bank, money = 10)
+    @cash -= money
+    bank.bank_amount += money
+  end
 end

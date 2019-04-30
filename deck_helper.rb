@@ -16,7 +16,7 @@ module DeckHelper
     { name: 'J♠', number: 10 },
     { name: 'Q♠', number: 10 },
     { name: 'K♠', number: 10 },
-    { name: 'T♠', number: 10 }
+    { name: 'T♠', number: 11 }
   ]
 
   # червы
@@ -33,7 +33,7 @@ module DeckHelper
     { name: 'J♥', number: 10 },
     { name: 'Q♥', number: 10 },
     { name: 'K♥', number: 10 },
-    { name: 'T♥', number: 10 }
+    { name: 'T♥', number: 11 }
   ]
 
   # бубны
@@ -50,7 +50,7 @@ module DeckHelper
     { name: 'J♦', number: 10 },
     { name: 'Q♦', number: 10 },
     { name: 'K♦', number: 10 },
-    { name: 'T♦', number: 10 }
+    { name: 'T♦', number: 11 }
   ]
 
   # трефы
@@ -67,7 +67,7 @@ module DeckHelper
     { name: 'J♣', number: 10 },
     { name: 'Q♣', number: 10 },
     { name: 'K♣', number: 10 },
-    { name: 'T♣', number: 10 }
+    { name: 'T♣', number: 11 }
   ]
 
   module ClassMethods
