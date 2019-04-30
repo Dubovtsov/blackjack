@@ -5,7 +5,14 @@ class User
   def initialize(name, cash = 100, hand = [])
     @name = name
     @cash = cash
-    @hand = []
     @hand = hand
+  end
+
+  def take_card(n, deck)
+    n.times do |x|
+      @hand << deck.deck.last
+      deck.deck.pop
+    end
+    @current_hand
   end
 end

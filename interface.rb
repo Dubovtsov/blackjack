@@ -7,6 +7,8 @@ require_relative 'user'
 class Menu
   include DeckHelper
 
+  attr_accessor :deck
+
   def initialize
     @deck = Deck.new
     @select_item = {
@@ -21,11 +23,22 @@ class Menu
     puts 'Как Вас зовут?'
     name = gets.chomp
     puts "Добро пожаловать в игру, #{name}!"
-    @user = User.new(name, 100, take_card(2))
+    @user = User.new(name, 100)
+    @user.take_card(2, @deck)
+    @dealer = User.new('Dealer', 100)
+    @dealer.take_card(2, @deck)
+
+    puts "На вашем счёте: #{@user.cash}$" # Сделать метод?
+    puts "Карт в колоде: #{@deck.deck.size}"
     puts 'У Вас в руке:'
     puts @separator
-    with_separator(show_hand)
+    with_separator(show_hand(@user))
     print "\n"
+
+# for test
+    # puts @separator
+    # with_separator(show_hand(@dealer))
+    # print "\n"
 
     puts 'Выберите действие:'
     @select_item.each do |key, value|
@@ -54,17 +67,8 @@ class Menu
     puts @separator
   end
 
-  def take_card(n)
-    @current_hand ||= []
-    n.times do |x|
-      @current_hand << @deck.deck.last
-      @deck.deck.pop
-    end
-    @current_hand
-  end
-
-  def show_hand
-    @user.hand.each do |card, _index|
+  def show_hand(user)
+    user.hand.each do |card, _index|
       print "| #{card[:name]} | "
     end
   end
