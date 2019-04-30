@@ -14,10 +14,14 @@ class Menu
     @current_deck = Deck.new
     @select_item = {
       1 => 'Взять карту',
-      2 => 'Показать карты',
-      3 => 'Выйти из игры'
+      2 => 'Пропустить ход',
+      3 => 'Показать карты',
+      4 => 'Начать заново',
+      5 => 'Выйти из игры'
     }
-    @separator = "-------------------------------------"
+    def separator
+      puts "-------------------------------------"
+    end
   end
 
   def run
@@ -26,23 +30,16 @@ class Menu
     puts "Добро пожаловать в игру, #{name}!"
     @bank = Bank.new
     @user = User.new(name, 100)
-    @user.take_card(2, @current_deck)
+    user_move(2)
     @user.bet(@bank)
     @dealer = User.new('Dealer', 100)
-    @dealer.take_card(2, @current_deck)
+    dealer_move(2)
     @dealer.bet(@bank)
-
-    puts "На вашем счёте: #{@user.cash}$" # Сделать метод?
-    puts "Ставок в банке: #{@bank.bank_amount}$" # Сделать метод?
-    puts "Карт в колоде: #{@current_deck.deck.size}"
-    puts 'У Вас в руке:'
-    puts @separator
-    with_separator(show_hand(@user))
-    print "\n"
-
+    
+    main_info
     # for test
     # puts @separator
-    # with_separator(show_hand(@dealer))
+    # with_separator(cards_in_hand(@dealer))
     # print "\n"
 
     puts 'Выберите действие:'
@@ -54,10 +51,24 @@ class Menu
       choise = gets.chomp
       case choise
       when "1"
-
+        user_move(1)
+        main_info
       when "2"
-
+        dealer_move(1)
+        main_info
       when "3"
+        puts 'Карты дилера:'
+        separator
+        with_separator(cards_in_hand(@dealer))
+        print "\n"
+
+        puts 'У Вас в руке:'
+        separator
+        with_separator(cards_in_hand(@user))
+        print "\n"
+      when "4"
+        Menu.new.run
+      when "5"
         puts 'Будем рады видеть Вас снова!'
         break
       else
@@ -66,18 +77,39 @@ class Menu
     end
   end
 
+  def main_info
+    puts "На вашем счёте: #{@user.cash}$"
+    puts "Счёт дилера: #{@dealer.cash}$"
+    puts "Денег в банке: #{@bank.bank_amount}$"
+    puts "Карт в колоде: #{@current_deck.deck.size}"
+    puts 'У Вас в руке:'
+    separator
+    with_separator(cards_in_hand(@user))
+    print "\n"
+  end
+
   def with_separator(_method_name)
     _method_name
     print "\n"
-    puts @separator
+    separator
   end
 
-  def show_hand(user)
+  def cards_in_hand(user)
     sum = 0
     user.hand.each do |card, _index|
       print "| #{card[:name]} | "
       sum += card[:number]
     end
     print "сумма очков: #{sum}"
+  end
+
+  def show_hand(user);end
+
+  def dealer_move(num_of_cards)
+    @dealer.take_card(num_of_cards, @current_deck)
+  end
+
+  def user_move(num_of_cards)
+    @user.take_card(num_of_cards, @current_deck)
   end
 end
