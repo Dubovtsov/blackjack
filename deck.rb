@@ -1,4 +1,6 @@
-require_relative "deck_helper"
+# frozen_string_literal: true
+
+require_relative 'deck_helper'
 
 class Deck
   include DeckHelper
@@ -10,7 +12,7 @@ class Deck
 
   # метод рандомайзер
   def self.mix_deck
-    Spades.concat(Hearts, Clubs, Diamonds).shuffle
+    SPADES.concat(HEARTS, CLUBS, DIAMONDS).shuffle
   end
 end
 
