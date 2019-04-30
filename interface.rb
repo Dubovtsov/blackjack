@@ -74,8 +74,15 @@ class Menu
           show_menu
         end
       when "2"
-        dealer_move(1)
-        main_info
+        puts "Ход дилера."
+        if points(@dealer) < 17
+          dealer_move(1)
+          main_info
+        else
+          separator
+          puts "У дилера достаточно карт."
+          main_info
+        end
       when "3"
         puts 'Карты дилера:'
         separator
