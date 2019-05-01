@@ -8,7 +8,6 @@ class Deck
   attr_reader :deck
 
   def initialize
-    @deck = []
     @deck = Deck.mix_deck
   end
 

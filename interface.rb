@@ -11,7 +11,7 @@ class Menu
   attr_accessor :current_deck
 
   def initialize
-    @current_deck = Deck.new
+    @current_deck ||= Deck.new
     @select_item = {
       1 => 'Взять карту',
       2 => 'Пропустить ход',
@@ -28,6 +28,7 @@ class Menu
     puts 'Как Вас зовут?'
     name = gets.chomp
     puts "Добро пожаловать в игру, #{name}!"
+    separator
     @bank = Bank.new
     @user = User.new(name, 100)
     user_move(2)
@@ -50,38 +51,39 @@ class Menu
       when "1"
         if @user.points < 17
           user_move(1)
-          main_info
-          puts "Ход дилера."
+          show_cards(@user)
+          puts "🗩  Ход дилера 🗩"
           if @dealer.points < 17
             dealer_move(1)
-            main_info
+            show_cards(@dealer)
+            show_menu
           else
             separator
-            puts "У дилера достаточно карт."
-            main_info
+            puts "🗩 Дилер пропускает ход 🗩"
+            show_cards
           end
         else
           separator
-          puts "Достаточно!"
-          puts "Ход дилера."
+          puts "🗩  Достаточно! 🗩"
+          puts "🗩  Ход дилера 🗩"
           if @dealer.points < 17
             dealer_move(1)
-            main_info
+            show_cards(@dealer)
           else
-            puts "У дилера достаточно карт."
-            main_info
+            puts "🗩  Дилер пропускает ход 🗩"
+            show_cards(@dealer)
           end
           show_menu
         end
       when "2"
-        puts "Ход дилера."
+        puts "🗩  Ход дилера 🗩"
         if @dealer.points < 17
           dealer_move(1)
-          main_info
+          show_cards
         else
           separator
-          puts "У дилера достаточно карт."
-          main_info
+          puts "🗩  Дилер пропускает ход 🗩"
+          show_cards
         end
       when "3"
         puts 'Карты дилера:'
@@ -93,6 +95,21 @@ class Menu
         separator
         with_separator(cards_in_hand(@user))
         print "\n"
+
+        if @user.points > @dealer.points && @dealer.points <= 21 && @user.points <= 21
+          puts "🗩  Вы выиграли! 🗩"
+          @bank.gain(@user)
+          puts "На вашем счёте: #{@user.cash}$"
+          puts "Счёт дилера: #{@dealer.cash}$"
+        elsif @user.points == @dealer.points && @user.points <= 21
+          puts "🗩  Ничья! 🗩"
+        elsif @user.points < @dealer.points && @dealer.points <= 21
+          puts "🗩  Вы проиграли! 🗩"
+          puts "На вашем счёте: #{@user.cash}$"
+          puts "Счёт дилера: #{@dealer.cash}$"
+        else
+          puts "🗩  Перебор! 🗩"
+        end
         separator
         show_menu
       when "4"
@@ -108,18 +125,10 @@ class Menu
   end
 
   def main_info
-    puts "На вашем счёте: #{@user.cash}$"
-    puts "Счёт дилера: #{@dealer.cash}$"
-    puts "Денег в банке: #{@bank.bank_amount}$"
-    puts "Карт в колоде: #{@current_deck.deck.size}"
-    puts 'У Вас в руке:'
-    separator
-    with_separator(cards_in_hand(@user))
-    print "\n"
-    puts 'Карты дилера:'
-    separator
-    with_separator(cards_in_hand(@dealer))
-    print "\n"
+    show_accounts
+    puts "🏛  Денег в банке: #{@bank.bank_amount}$"
+    puts "🂠  Карт в колоде: #{@current_deck.deck.size}"
+    show_cards
   end
 
   def with_separator(_method_name)
@@ -128,10 +137,38 @@ class Menu
     separator
   end
 
+  def show_accounts
+    puts "На вашем счёте: #{@user.cash}$"
+    puts "Счёт дилера: #{@dealer.cash}$"
+  end
+
+  def show_cards(user = nil)
+    if user == @user
+      puts 'У Вас в руке:'
+      separator
+      with_separator(cards_in_hand(@user))
+      print "\n"
+    elsif user == @dealer
+      puts 'Карты дилера:'
+      separator
+      with_separator(cards_in_hand(@dealer))
+      print "\n"
+    else
+      puts 'У Вас в руке:'
+      separator
+      with_separator(cards_in_hand(@user))
+      print "\n"
+      puts 'Карты дилера:'
+      separator
+      with_separator(cards_in_hand(@dealer))
+      print "\n"
+    end
+  end
+
   def show_menu
-    puts 'Выберите действие:'
+    puts 'Выберите действие(введите цифру от 1 до 5):'
     @select_item.each do |key, value|
-      puts "#{key} -> #{value}"
+      puts "#{key} 🖝  #{value}"
     end
   end
 
