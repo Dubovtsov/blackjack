@@ -10,10 +10,27 @@ class User
 
   def take_card(n, deck)
     n.times do |x|
-      @hand << deck.deck.last
-      deck.deck.pop
+      card = deck.deck.last
+      sum = self.points
+      # проверка суммы
+      if card[:number] == 11 && sum + card[:number] > 21
+        card[:number] = 1
+        @hand << card
+        deck.deck.pop
+      else
+        @hand << card
+        deck.deck.pop
+      end
     end
     @current_hand
+  end
+
+  def points
+    sum = 0
+    self.hand.each do |card, _index|
+      sum += card[:number]
+    end
+    sum
   end
 
   def bet(bank, money = 10)

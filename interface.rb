@@ -20,7 +20,7 @@ class Menu
       5 => 'Выйти из игры'
     }
     def separator
-      puts "-------------------------------------"
+      puts "-------------------------------------------"
     end
   end
 
@@ -48,11 +48,11 @@ class Menu
       choise = gets.chomp
       case choise
       when "1"
-        if points(@user) < 17
+        if @user.points < 17
           user_move(1)
           main_info
           puts "Ход дилера."
-          if points(@dealer) < 17
+          if @dealer.points < 17
             dealer_move(1)
             main_info
           else
@@ -64,7 +64,7 @@ class Menu
           separator
           puts "Достаточно!"
           puts "Ход дилера."
-          if points(@dealer) < 17
+          if @dealer.points < 17
             dealer_move(1)
             main_info
           else
@@ -75,7 +75,7 @@ class Menu
         end
       when "2"
         puts "Ход дилера."
-        if points(@dealer) < 17
+        if @dealer.points < 17
           dealer_move(1)
           main_info
         else
@@ -93,6 +93,8 @@ class Menu
         separator
         with_separator(cards_in_hand(@user))
         print "\n"
+        separator
+        show_menu
       when "4"
         separator
         Menu.new.run
@@ -146,14 +148,6 @@ class Menu
     end
     print "сумма очков: #{sum}" if user == @user
     print "сумма очков: #{sum}" unless show_dealer.nil?
-  end
-
-  def points(user)
-    sum = 0
-    user.hand.each do |card, _index|
-      sum += card[:number]
-    end
-    sum
   end
 
   def dealer_move(num_of_cards)
