@@ -16,8 +16,9 @@ class Menu
       1 => 'Взять карту',
       2 => 'Пропустить ход',
       3 => 'Показать карты',
-      4 => 'Начать заново',
-      5 => 'Выйти из игры'
+      4 => 'Новая раздача',
+      5 => 'Начать заново',
+      6 => 'Выйти из игры'
     }
     def separator
       puts "-------------------------------------------"
@@ -48,7 +49,7 @@ class Menu
     @dealer = User.new('Dealer', 100)
     dealer_move(2)
     @dealer.bet(@bank)
-    main_info  
+    main_info
     show_menu
 
     loop do
@@ -132,9 +133,20 @@ class Menu
         separator
         show_menu
       when "4"
+        @user.hand = []
+        user_move(2)
+        @user.bet(@bank)
+
+        @dealer.hand = []
+        dealer_move(2)
+        @dealer.bet(@bank)
+
+        main_info
+        show_menu
+      when "5"
         separator
         Menu.new.run
-      when "5"
+      when "6"
         puts 'Будем рады видеть Вас снова!'
         break
       else
