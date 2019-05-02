@@ -8,14 +8,6 @@ class Deck
   attr_reader :deck
 
   def initialize
-    @deck = mix_deck
-  end
-
-  def mix_deck
-    SPADES.concat(HEARTS, CLUBS, DIAMONDS).shuffle
+    @deck = SPADES.concat(HEARTS, CLUBS, DIAMONDS).shuffle
   end
 end
-
-# For testing
-# d = Deck.new
-# puts d.deck

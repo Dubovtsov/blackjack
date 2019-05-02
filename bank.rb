@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Bank
   attr_accessor :bank_amount
 
@@ -10,7 +12,5 @@ class Bank
     @bank_amount = 0
   end
 
-  def return_cash
-    
-  end
+  def return_cash; end
 end

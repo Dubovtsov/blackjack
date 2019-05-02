@@ -6,8 +6,6 @@ require_relative 'user'
 require_relative 'bank'
 
 class Menu
-  # include DeckHelper
-
   attr_accessor :current_deck
 
   def initialize
@@ -20,25 +18,26 @@ class Menu
       5 => 'Начать заново',
       6 => 'Выйти из игры'
     }
-    def separator
-      puts "-------------------------------------------"
-    end
   end
 
   def loading
     3.times do
       sleep 0.5
-      print " - "
+      print ' - '
     end
-    puts ""
+    puts ''
+  end
+
+  def separator
+    puts "-------------------------------------------"
   end
 
   def message_dealer_move
-    puts "🗩  Ход дилера 🗩"
+    puts '🗩  Ход дилера 🗩'
   end
 
   def message_skip
-    puts "🗩  Дилер пропускает ход 🗩"
+    puts '🗩  Дилер пропускает ход 🗩'
   end
 
   def message_bank
@@ -46,13 +45,13 @@ class Menu
   end
 
   def run
-    system "clear"
+    system 'clear'
     puts 'Как Вас зовут?'
     name = gets.chomp
     puts "Добро пожаловать в игру, #{name}!"
     separator
     @bank = Bank.new
-    @user = User.new(name, 10)
+    @user = User.new(name, 100)
     user_move(2)
     @user.bet(@bank)
     @dealer = User.new('Dealer', 100)
@@ -64,9 +63,9 @@ class Menu
     loop do
       choise = gets.chomp
       case choise
-      when "1"
-        system "clear"
-        if @user.points < 17
+      when '1'
+        system 'clear'
+        if @user.points < 20
           user_move(1)
           show_cards(@user)
           message_dealer_move
@@ -83,7 +82,7 @@ class Menu
           end
         else
           separator
-          puts "🗩  Достаточно! 🗩"
+          puts '🗩  Достаточно! 🗩'
           message_dealer_move
           loading
           if @dealer.points < 17
@@ -95,8 +94,8 @@ class Menu
           end
           show_menu
         end
-      when "2"
-        system "clear"
+      when '2'
+        system 'clear'
         message_dealer_move
         loading
         if @dealer.points < 17
@@ -109,48 +108,49 @@ class Menu
           show_cards
           show_menu
         end
-      when "3"
-        system "clear"
+      when '3'
+        system 'clear'
         puts 'Карты дилера:'
         separator
-        with_separator(cards_in_hand(@dealer, "show"))
+        withseparator(cards_in_hand(@dealer, 'show'))
         print "\n"
 
         puts 'Ваши карты:'
         separator
-        with_separator(cards_in_hand(@user))
+        withseparator(cards_in_hand(@user))
         print "\n"
 
         if @user.points > @dealer.points && @user.points <= 21 ||
-            @user.points <= 21 && @dealer.points > 21
-          puts "🗩  Вы выиграли! 🗩"
+           @user.points <= 21 && @dealer.points > 21
+          puts '🗩  Вы выиграли! 🗩'
           @bank.gain(@user)
-          puts "На вашем счёте: #{@user.cash}$"
-          puts "Счёт дилера: #{@dealer.cash}$"
+          show_accounts
           message_bank
         elsif @user.points == @dealer.points && @user.points <= 21
-          puts "🗩  Ничья! 🗩"
+          puts '🗩  Ничья! 🗩'
           @user.cash += 10
-          @user.cash += 10
+          @dealer.cash += 10
           @bank.bank_amount = 0
           message_bank
-          puts "На вашем счёте: #{@user.cash}$"
-          puts "Счёт дилера: #{@dealer.cash}$"
+          show_accounts
         elsif @user.points < @dealer.points && @dealer.points <= 21 ||
-            @user.points > @dealer.points && @dealer.points <= 21
-          puts "🗩  Вы проиграли! 🗩"
+              @user.points > @dealer.points && @dealer.points <= 21
+          puts '🗩  Вы проиграли! 🗩'
           @bank.gain(@dealer)
-          puts "На вашем счёте: #{@user.cash}$"
-          puts "Счёт дилера: #{@dealer.cash}$"
+          show_accounts
           message_bank
         else
-          puts "🗩  Перебор! 🗩"
-          main_info
+          puts '🗩  Перебор! 🗩'
+          @user.cash += 10
+          @dealer.cash += 10
+          @bank.bank_amount = 0
+          message_bank
+          show_accounts
         end
         separator
         show_menu
-      when "4"
-        system "clear"
+      when '4'
+        system 'clear'
         if @user.cash >= 10 && @dealer.cash >= 10
           @current_deck = Deck.new
           @user.hand = []
@@ -164,14 +164,14 @@ class Menu
           main_info
           show_menu
         else
-          puts "Недостаточно средств для ставки. Игра окончена!"
+          puts 'Недостаточно средств для ставки. Игра окончена!'
           break
         end
-      when "5"
-        system "clear"
+      when '5'
+        system 'clear'
         separator
         Menu.new.run
-      when "6"
+      when '6'
         puts 'Будем рады видеть Вас снова!'
         break
       else
@@ -183,11 +183,11 @@ class Menu
   def main_info
     show_accounts
     message_bank
-    puts "🂠  Карт в колоде: #{@current_deck.deck.size}"
+    # puts "🂠  Карт в колоде: #{@current_deck.deck.size}"
     show_cards
   end
 
-  def with_separator(_method_name)
+  def withseparator(_method_name)
     _method_name
     print "\n"
     separator
@@ -202,21 +202,21 @@ class Menu
     if user == @user
       puts 'У Вас в руке:'
       separator
-      with_separator(cards_in_hand(@user))
+      withseparator(cards_in_hand(@user))
       print "\n"
     elsif user == @dealer
       puts 'Карты дилера:'
       separator
-      with_separator(cards_in_hand(@dealer))
+      withseparator(cards_in_hand(@dealer))
       print "\n"
     else
       puts 'У Вас в руке:'
       separator
-      with_separator(cards_in_hand(@user))
+      withseparator(cards_in_hand(@user))
       print "\n"
       puts 'Карты дилера:'
       separator
-      with_separator(cards_in_hand(@dealer))
+      withseparator(cards_in_hand(@dealer))
       print "\n"
     end
   end
@@ -232,7 +232,7 @@ class Menu
     sum = 0
     user.hand.each do |card, _index|
       if show_dealer.nil?
-        print user == @user ? "| #{card[:name]} | " : "| * |"
+        print user == @user ? "| #{card[:name]} | " : '| * |'
       else
         print "| #{card[:name]} | "
       end

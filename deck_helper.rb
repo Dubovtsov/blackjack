@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-# Helper for Deck
 module DeckHelper
-  # пики
   SPADES = [
     { name: '2♠', number: 2 },
     { name: '3♠', number: 3 },
@@ -19,7 +17,6 @@ module DeckHelper
     { name: 'T♠', number: 11 }
   ]
 
-  # червы
   HEARTS = [
     { name: '2♥', number: 2 },
     { name: '3♥', number: 3 },
@@ -36,7 +33,6 @@ module DeckHelper
     { name: 'T♥', number: 11 }
   ]
 
-  # бубны
   DIAMONDS = [
     { name: '2♦', number: 2 },
     { name: '3♦', number: 3 },
@@ -53,7 +49,6 @@ module DeckHelper
     { name: 'T♦', number: 11 }
   ]
 
-  # трефы
   CLUBS = [
     { name: '2♣', number: 2 },
     { name: '3♣', number: 3 },

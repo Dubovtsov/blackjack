@@ -2,6 +2,7 @@
 
 class User
   attr_accessor :name, :cash, :hand
+
   def initialize(name, cash = 100, hand = [])
     @name = name
     @cash = cash
@@ -9,9 +10,9 @@ class User
   end
 
   def take_card(n, deck)
-    n.times do |x|
+    n.times do |_x|
       card = deck.deck.last
-      sum = self.points
+      sum = points
       # проверка суммы
       if card[:number] == 11 && sum + card[:number] > 21
         card[:number] = 1
@@ -27,7 +28,7 @@ class User
 
   def points
     sum = 0
-    self.hand.each do |card, _index|
+    hand.each do |card, _index|
       sum += card[:number]
     end
     sum
