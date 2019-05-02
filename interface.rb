@@ -25,6 +25,14 @@ class Menu
     end
   end
 
+  def loading
+    3.times do
+      sleep 0.5
+      print " - "
+    end
+    puts ""
+  end
+
   def message_dealer_move
     puts "🗩  Ход дилера 🗩"
   end
@@ -38,12 +46,13 @@ class Menu
   end
 
   def run
+    system "clear"
     puts 'Как Вас зовут?'
     name = gets.chomp
     puts "Добро пожаловать в игру, #{name}!"
     separator
     @bank = Bank.new
-    @user = User.new(name, 100)
+    @user = User.new(name, 10)
     user_move(2)
     @user.bet(@bank)
     @dealer = User.new('Dealer', 100)
@@ -61,6 +70,7 @@ class Menu
           user_move(1)
           show_cards(@user)
           message_dealer_move
+          loading
           if @dealer.points < 17
             dealer_move(1)
             show_cards(@dealer)
@@ -68,31 +78,36 @@ class Menu
           else
             separator
             message_skip
-            show_cards
+            show_cards @dealer
             show_menu
           end
         else
           separator
           puts "🗩  Достаточно! 🗩"
           message_dealer_move
+          loading
           if @dealer.points < 17
             dealer_move(1)
-            show_cards(@dealer)
+            show_cards
           else
             message_skip
-            show_cards(@dealer)
+            show_cards @dealer
           end
           show_menu
         end
       when "2"
+        system "clear"
         message_dealer_move
+        loading
         if @dealer.points < 17
           dealer_move(1)
           show_cards
+          show_menu
         else
           separator
           message_skip
           show_cards
+          show_menu
         end
       when "3"
         system "clear"
@@ -119,6 +134,8 @@ class Menu
           @user.cash += 10
           @bank.bank_amount = 0
           message_bank
+          puts "На вашем счёте: #{@user.cash}$"
+          puts "Счёт дилера: #{@dealer.cash}$"
         elsif @user.points < @dealer.points && @dealer.points <= 21 ||
             @user.points > @dealer.points && @dealer.points <= 21
           puts "🗩  Вы проиграли! 🗩"
@@ -133,17 +150,25 @@ class Menu
         separator
         show_menu
       when "4"
-        @user.hand = []
-        user_move(2)
-        @user.bet(@bank)
+        system "clear"
+        if @user.cash >= 10 && @dealer.cash >= 10
+          @current_deck = Deck.new
+          @user.hand = []
+          user_move(2)
+          @user.bet(@bank)
 
-        @dealer.hand = []
-        dealer_move(2)
-        @dealer.bet(@bank)
+          @dealer.hand = []
+          dealer_move(2)
+          @dealer.bet(@bank)
 
-        main_info
-        show_menu
+          main_info
+          show_menu
+        else
+          puts "Недостаточно средств для ставки. Игра окончена!"
+          break
+        end
       when "5"
+        system "clear"
         separator
         Menu.new.run
       when "6"
