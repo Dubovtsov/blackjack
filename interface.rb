@@ -96,14 +96,16 @@ class Menu
         with_separator(cards_in_hand(@user))
         print "\n"
 
-        if @user.points > @dealer.points && @dealer.points <= 21 && @user.points <= 21
+        if @user.points > @dealer.points && @user.points <= 21 ||
+            @user.points <= 21 && @dealer.points > 21
           puts "🗩  Вы выиграли! 🗩"
           @bank.gain(@user)
           puts "На вашем счёте: #{@user.cash}$"
           puts "Счёт дилера: #{@dealer.cash}$"
         elsif @user.points == @dealer.points && @user.points <= 21
           puts "🗩  Ничья! 🗩"
-        elsif @user.points < @dealer.points && @dealer.points <= 21
+        elsif @user.points < @dealer.points && @dealer.points <= 21 ||
+            @user.points > @dealer.points && @dealer.points <= 21
           puts "🗩  Вы проиграли! 🗩"
           puts "На вашем счёте: #{@user.cash}$"
           puts "Счёт дилера: #{@dealer.cash}$"
