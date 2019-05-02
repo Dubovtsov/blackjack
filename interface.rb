@@ -11,7 +11,7 @@ class Menu
   attr_accessor :current_deck
 
   def initialize
-    @current_deck ||= Deck.new
+    @current_deck = Deck.new
     @select_item = {
       1 => 'Взять карту',
       2 => 'Пропустить ход',
@@ -22,6 +22,18 @@ class Menu
     def separator
       puts "-------------------------------------------"
     end
+  end
+
+  def message_dealer_move
+    puts "🗩  Ход дилера 🗩"
+  end
+
+  def message_skip
+    puts "🗩  Дилер пропускает ход 🗩"
+  end
+
+  def message_bank
+    puts "🏛  Денег в банке: #{@bank.bank_amount}$"
   end
 
   def run
@@ -36,56 +48,53 @@ class Menu
     @dealer = User.new('Dealer', 100)
     dealer_move(2)
     @dealer.bet(@bank)
-    
-    main_info
-    # for test
-    # puts @separator
-    # with_separator(cards_in_hand(@dealer))
-    # print "\n"
-  
+    main_info  
     show_menu
 
     loop do
       choise = gets.chomp
       case choise
       when "1"
+        system "clear"
         if @user.points < 17
           user_move(1)
           show_cards(@user)
-          puts "🗩  Ход дилера 🗩"
+          message_dealer_move
           if @dealer.points < 17
             dealer_move(1)
             show_cards(@dealer)
             show_menu
           else
             separator
-            puts "🗩 Дилер пропускает ход 🗩"
+            message_skip
             show_cards
+            show_menu
           end
         else
           separator
           puts "🗩  Достаточно! 🗩"
-          puts "🗩  Ход дилера 🗩"
+          message_dealer_move
           if @dealer.points < 17
             dealer_move(1)
             show_cards(@dealer)
           else
-            puts "🗩  Дилер пропускает ход 🗩"
+            message_skip
             show_cards(@dealer)
           end
           show_menu
         end
       when "2"
-        puts "🗩  Ход дилера 🗩"
+        message_dealer_move
         if @dealer.points < 17
           dealer_move(1)
           show_cards
         else
           separator
-          puts "🗩  Дилер пропускает ход 🗩"
+          message_skip
           show_cards
         end
       when "3"
+        system "clear"
         puts 'Карты дилера:'
         separator
         with_separator(cards_in_hand(@dealer, "show"))
@@ -102,15 +111,23 @@ class Menu
           @bank.gain(@user)
           puts "На вашем счёте: #{@user.cash}$"
           puts "Счёт дилера: #{@dealer.cash}$"
+          message_bank
         elsif @user.points == @dealer.points && @user.points <= 21
           puts "🗩  Ничья! 🗩"
+          @user.cash += 10
+          @user.cash += 10
+          @bank.bank_amount = 0
+          message_bank
         elsif @user.points < @dealer.points && @dealer.points <= 21 ||
             @user.points > @dealer.points && @dealer.points <= 21
           puts "🗩  Вы проиграли! 🗩"
+          @bank.gain(@dealer)
           puts "На вашем счёте: #{@user.cash}$"
           puts "Счёт дилера: #{@dealer.cash}$"
+          message_bank
         else
           puts "🗩  Перебор! 🗩"
+          main_info
         end
         separator
         show_menu
@@ -128,7 +145,7 @@ class Menu
 
   def main_info
     show_accounts
-    puts "🏛  Денег в банке: #{@bank.bank_amount}$"
+    message_bank
     puts "🂠  Карт в колоде: #{@current_deck.deck.size}"
     show_cards
   end

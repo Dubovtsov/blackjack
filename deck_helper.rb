@@ -69,15 +69,4 @@ module DeckHelper
     { name: 'K♣', number: 10 },
     { name: 'T♣', number: 11 }
   ]
-
-  module ClassMethods
-  end
-
-  module InstanceMethods
-  end
-
-  def self.included(base)
-    base.extend         ClassMethods
-    base.send :include, InstanceMethods
-  end
 end
