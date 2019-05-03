@@ -78,7 +78,7 @@ module Interface
 
   def show_menu
     puts 'Выберите действие(введите цифру от 1 до 5):'
-    @select_item.each do |key, value|
+    @action_menu.each do |key, value|
       puts "#{key} 🖝  #{value}"
     end
   end

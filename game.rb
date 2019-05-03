@@ -9,7 +9,7 @@ class Game
 
   def initialize
     @current_deck = Deck.new
-    @select_item = {
+    @action_menu = {
       1 => 'Взять карту',
       2 => 'Пропустить ход',
       3 => 'Показать карты',
@@ -40,6 +40,7 @@ class Game
       when '4'
         system 'clear'
         again
+        break if @quit == "break"
       when '5'
         system 'clear'
         separator
@@ -193,7 +194,7 @@ class Game
       show_menu
     else
       puts 'Недостаточно средств для ставки. Игра окончена!'
-      return "break"
+      return @quit = "break"
     end
   end
 end
