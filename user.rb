@@ -13,7 +13,6 @@ class User
     n.times do |_x|
       card = deck.deck.last
       sum = points
-      # проверка суммы
       if card[:number] == 11 && sum + card[:number] > 21
         card[:number] = 1
         @hand << card

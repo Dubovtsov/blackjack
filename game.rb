@@ -21,7 +21,7 @@ class Game
 
   def run
     system 'clear'
-    name = user_input("Как Вас зовут?")
+    name = user_input('Как Вас зовут?')
     puts "Добро пожаловать в игру, #{name}!"
     initial_conditions(name)
    
@@ -40,7 +40,7 @@ class Game
       when '4'
         system 'clear'
         again
-        break if @quit == "break"
+        break if @quit == 'break'
       when '5'
         system 'clear'
         separator
@@ -194,7 +194,7 @@ class Game
       show_menu
     else
       puts 'Недостаточно средств для ставки. Игра окончена!'
-      return @quit = "break"
+      @quit = 'break'
     end
   end
 end
