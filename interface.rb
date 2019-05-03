@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'deck'
-require_relative 'deck_helper'
 require_relative 'user'
 require_relative 'bank'
 
@@ -183,7 +182,7 @@ class Menu
   def main_info
     show_accounts
     message_bank
-    # puts "🂠  Карт в колоде: #{@current_deck.deck.size}"
+    puts "🂠  Карт в колоде: #{@current_deck.deck.size}"
     show_cards
   end
 
