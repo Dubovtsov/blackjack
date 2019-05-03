@@ -6,6 +6,15 @@ require_relative 'bank'
 
 module Interface
   
+  MENU = {
+      1 => 'Взять карту',
+      2 => 'Пропустить ход',
+      3 => 'Показать карты',
+      4 => 'Новая раздача',
+      5 => 'Начать заново',
+      6 => 'Выйти из игры'
+    }.freeze
+
   def loading
     3.times do
       sleep 0.5

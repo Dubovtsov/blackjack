@@ -11,4 +11,9 @@ class Bank
     user.cash += @bank_amount
     @bank_amount = 0
   end
+
+  def return_bet(name)
+    name.cash += 10
+    @bank_amount = 0
+  end
 end

@@ -5,18 +5,13 @@ require_relative 'interface'
 
 class Game
   include Interface
-  attr_accessor :current_deck
+  attr_accessor :current_deck, :bank, :dealer
 
-  def initialize
+  def initialize(menu)
     @current_deck = Deck.new
-    @action_menu = {
-      1 => 'Взять карту',
-      2 => 'Пропустить ход',
-      3 => 'Показать карты',
-      4 => 'Новая раздача',
-      5 => 'Начать заново',
-      6 => 'Выйти из игры'
-    }
+    @bank = Bank.new
+    @dealer = User.new('Dealer', 100)
+    @action_menu = menu
   end
 
   def run
@@ -44,7 +39,7 @@ class Game
       when '5'
         system 'clear'
         separator
-        Game.new.run
+        Game.new(MENU).run
       when '6'
         puts 'Будем рады видеть Вас снова!'
         break
@@ -56,11 +51,9 @@ class Game
 
   def initial_conditions(name)
     separator
-    @bank = Bank.new
     @user = User.new(name, 100)
     user_move(2)
     @user.bet(@bank)
-    @dealer = User.new('Dealer', 100)
     dealer_move(2)
     @dealer.bet(@bank)
     main_info
@@ -156,9 +149,8 @@ class Game
       message_bank
     elsif @user.points == @dealer.points && @user.points <= 21
       puts '🗩  Ничья! 🗩'
-      @user.cash += 10
-      @dealer.cash += 10
-      @bank.bank_amount = 0
+      @bank.return_bet(@user)
+      @bank.return_bet(@dealer)
       message_bank
       show_accounts
     elsif @user.points < @dealer.points && @dealer.points <= 21 ||
@@ -169,9 +161,8 @@ class Game
       message_bank
     else
       puts '🗩  Перебор! 🗩'
-      @user.cash += 10
-      @dealer.cash += 10
-      @bank.bank_amount = 0
+      @bank.return_bet(@user)
+      @bank.return_bet(@dealer)
       message_bank
       show_accounts
     end
