@@ -32,6 +32,10 @@ module Interface
     puts "-------------------------------------------"
   end
 
+  def message(output)
+    puts "🗩  #{output} 🗩"
+  end
+
   def message_dealer_move
     puts '🗩  Ход дилера 🗩'
   end

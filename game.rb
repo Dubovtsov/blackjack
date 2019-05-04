@@ -101,7 +101,7 @@ class Game
       end
     else
       separator
-      puts '🗩  Достаточно! 🗩'
+      message('Достаточно!')
       message_dealer_move
       loading
       if @dealer.points < 17
@@ -143,24 +143,24 @@ class Game
 
     if @user.points > @dealer.points && @user.points <= 21 ||
        @user.points <= 21 && @dealer.points > 21
-      puts '🗩  Вы выиграли! 🗩'
+      message('Вы выиграли!')
       @bank.gain(@user)
       show_accounts
       message_bank
     elsif @user.points == @dealer.points && @user.points <= 21
-      puts '🗩  Ничья! 🗩'
+      message('Ничья!')
       @bank.return_bet(@user)
       @bank.return_bet(@dealer)
       message_bank
       show_accounts
     elsif @user.points < @dealer.points && @dealer.points <= 21 ||
           @user.points > @dealer.points && @dealer.points <= 21
-      puts '🗩  Вы проиграли! 🗩'
+      message('Вы проиграли!')
       @bank.gain(@dealer)
       show_accounts
       message_bank
     else
-      puts '🗩  Перебор! 🗩'
+      message('Перебор!')
       @bank.return_bet(@user)
       @bank.return_bet(@dealer)
       message_bank
@@ -184,7 +184,7 @@ class Game
       main_info
       show_menu
     else
-      puts 'Недостаточно средств для ставки. Игра окончена!'
+      message('Недостаточно средств для ставки. Игра окончена!')
       @quit = 'break'
     end
   end
