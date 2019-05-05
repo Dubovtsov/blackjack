@@ -17,7 +17,7 @@ class Game
   def run
     system 'clear'
     name = user_input('Как Вас зовут?')
-    puts "Добро пожаловать в игру, #{name}!"
+    message("Добро пожаловать в игру, #{name}!")
     initial_conditions(name)
    
     loop do
@@ -41,10 +41,10 @@ class Game
         separator
         Game.new(MENU).run
       when '6'
-        puts 'Будем рады видеть Вас снова!'
+        message('Будем рады видеть Вас снова!')
         break
       else
-        puts 'Неверный ввод!'
+        message('Неверный ввод!')
       end
     end
   end
@@ -60,20 +60,20 @@ class Game
     show_menu
   end
 
-  def cards_in_hand(user, show_dealer = nil)
-    sum = 0
-    user.hand.each do |card, _index|
-      if show_dealer.nil?
-        print user == @user ? "| #{card[:name]} | " : '| * |'
-      else
-        print "| #{card[:name]} | "
-      end
-      sum += card[:number] if user == @user
-      sum += card[:number] unless show_dealer.nil?
-    end
-    print "сумма очков: #{sum}" if user == @user
-    print "сумма очков: #{sum}" unless show_dealer.nil?
-  end
+  # def cards_in_hand(user, show_dealer = nil)
+  #   sum = 0
+  #   user.hand.each do |card, _index|
+  #     if show_dealer.nil?
+  #       print user == @user ? "| #{card[:name]} | " : '| * |'
+  #     else
+  #       print "| #{card[:name]} | "
+  #     end
+  #     sum += card[:number] if user == @user
+  #     sum += card[:number] unless show_dealer.nil?
+  #   end
+  #   print "сумма очков: #{sum}" if user == @user
+  #   print "сумма очков: #{sum}" unless show_dealer.nil?
+  # end
 
   def dealer_move(num_of_cards)
     @dealer.take_card(num_of_cards, @current_deck)
@@ -86,12 +86,12 @@ class Game
   def move
     if @user.points < 20
       user_move(1)
-      show_cards(@user)
+      show_cards @user
       message_dealer_move
       loading
       if @dealer.points < 17
         dealer_move(1)
-        show_cards(@dealer)
+        show_cards @dealer
         show_menu
       else
         separator
@@ -133,12 +133,12 @@ class Game
   def show
     puts 'Карты дилера:'
     separator
-    withseparator(cards_in_hand(@dealer, 'show'))
+    withseparator(@dealer.cards_in_hand('show'))
     print "\n"
 
     puts 'Ваши карты:'
     separator
-    withseparator(cards_in_hand(@user))
+    withseparator(@user.cards_in_hand('show'))
     print "\n"
 
     if @user.points > @dealer.points && @user.points <= 21 ||

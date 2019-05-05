@@ -70,21 +70,21 @@ module Interface
     if user == @user
       puts 'У Вас в руке:'
       separator
-      withseparator(cards_in_hand(@user))
+      withseparator(@user.cards_in_hand("show"))
       print "\n"
     elsif user == @dealer
       puts 'Карты дилера:'
       separator
-      withseparator(cards_in_hand(@dealer))
+      withseparator(@dealer.cards_in_hand)
       print "\n"
     else
       puts 'У Вас в руке:'
       separator
-      withseparator(cards_in_hand(@user))
+      withseparator(@user.cards_in_hand("show"))
       print "\n"
       puts 'Карты дилера:'
       separator
-      withseparator(cards_in_hand(@dealer))
+      withseparator(@dealer.cards_in_hand)
       print "\n"
     end
   end

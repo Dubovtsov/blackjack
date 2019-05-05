@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class User
-  attr_accessor :name, :cash, :hand
+  attr_reader :name
+  attr_accessor :cash, :hand
 
   def initialize(name, cash = 100, hand = [])
     @name = name
@@ -23,6 +24,19 @@ class User
       end
     end
     @current_hand
+  end
+
+  def cards_in_hand(show = nil)
+    sum = 0
+    hand.each do |card, _index|
+      if show.nil?
+        print " | * | "
+      else
+        print "| #{card[:name]} | "
+      end
+      sum += card[:number]
+    end
+    print "сумма очков: #{sum}" unless show.nil?
   end
 
   def points
