@@ -30,7 +30,7 @@ class User
     sum = 0
     hand.each do |card, _index|
       if show.nil?
-        print " | * | "
+        print ' | * | '
       else
         print "| #{card[:name]} | "
       end

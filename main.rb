@@ -6,6 +6,4 @@ require_relative 'interface'
 require_relative 'user'
 require_relative 'bank'
 
-include Interface
-
-Game.new(MENU).run
+Game.new.run

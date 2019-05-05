@@ -5,15 +5,14 @@ require_relative 'user'
 require_relative 'bank'
 
 module Interface
-  
   MENU = {
-      1 => 'Взять карту',
-      2 => 'Пропустить ход',
-      3 => 'Показать карты',
-      4 => 'Новая раздача',
-      5 => 'Начать заново',
-      6 => 'Выйти из игры'
-    }.freeze
+    1 => 'Взять карту',
+    2 => 'Пропустить ход',
+    3 => 'Показать карты',
+    4 => 'Новая раздача',
+    5 => 'Начать заново',
+    6 => 'Выйти из игры'
+  }.freeze
 
   def loading
     3.times do
@@ -29,7 +28,7 @@ module Interface
   end
 
   def separator
-    puts "-------------------------------------------"
+    puts '-------------------------------------------'
   end
 
   def message(output)
@@ -70,7 +69,7 @@ module Interface
     if user == @user
       puts 'У Вас в руке:'
       separator
-      withseparator(@user.cards_in_hand("show"))
+      withseparator(@user.cards_in_hand('show'))
       print "\n"
     elsif user == @dealer
       puts 'Карты дилера:'
@@ -80,7 +79,7 @@ module Interface
     else
       puts 'У Вас в руке:'
       separator
-      withseparator(@user.cards_in_hand("show"))
+      withseparator(@user.cards_in_hand('show'))
       print "\n"
       puts 'Карты дилера:'
       separator

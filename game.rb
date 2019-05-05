@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'deck'
 require_relative 'user'
 require_relative 'bank'
@@ -7,11 +9,11 @@ class Game
   include Interface
   attr_accessor :current_deck, :bank, :dealer
 
-  def initialize(menu)
+  def initialize
     @current_deck = Deck.new
     @bank = Bank.new
     @dealer = User.new('Dealer', 100)
-    @action_menu = menu
+    @action_menu = MENU
   end
 
   def run
@@ -19,7 +21,7 @@ class Game
     name = user_input('Как Вас зовут?')
     message("Добро пожаловать в игру, #{name}!")
     initial_conditions(name)
-   
+
     loop do
       choise = gets.chomp
       case choise
@@ -60,21 +62,6 @@ class Game
     show_menu
   end
 
-  # def cards_in_hand(user, show_dealer = nil)
-  #   sum = 0
-  #   user.hand.each do |card, _index|
-  #     if show_dealer.nil?
-  #       print user == @user ? "| #{card[:name]} | " : '| * |'
-  #     else
-  #       print "| #{card[:name]} | "
-  #     end
-  #     sum += card[:number] if user == @user
-  #     sum += card[:number] unless show_dealer.nil?
-  #   end
-  #   print "сумма очков: #{sum}" if user == @user
-  #   print "сумма очков: #{sum}" unless show_dealer.nil?
-  # end
-
   def dealer_move(num_of_cards)
     @dealer.take_card(num_of_cards, @current_deck)
   end
@@ -111,7 +98,7 @@ class Game
         message_skip
         show_cards @dealer
       end
-        show_menu
+      show_menu
     end
   end
 

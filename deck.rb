@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require_relative "card"
+
+require_relative 'card'
 
 class Deck
   attr_reader :deck

@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 class Card
   attr_reader :spades, :hearts, :diamonds, :clubs
 
-  def initialize
-    @spades = [
+  SPADES = [
     { name: '2♠', number: 2 },
     { name: '3♠', number: 3 },
     { name: '4♠', number: 4 },
@@ -17,8 +18,7 @@ class Card
     { name: 'K♠', number: 10 },
     { name: 'T♠', number: 11 }
   ]
-
-  @hearts = [
+  HEARTS = [
     { name: '2♥', number: 2 },
     { name: '3♥', number: 3 },
     { name: '4♥', number: 4 },
@@ -33,8 +33,7 @@ class Card
     { name: 'K♥', number: 10 },
     { name: 'T♥', number: 11 }
   ]
-
-  @diamonds = [
+  DIAMONDS = [
     { name: '2♦', number: 2 },
     { name: '3♦', number: 3 },
     { name: '4♦', number: 4 },
@@ -49,8 +48,7 @@ class Card
     { name: 'K♦', number: 10 },
     { name: 'T♦', number: 11 }
   ]
-
-  @clubs = [
+  CLUBS = [
     { name: '2♣', number: 2 },
     { name: '3♣', number: 3 },
     { name: '4♣', number: 4 },
@@ -65,5 +63,11 @@ class Card
     { name: 'K♣', number: 10 },
     { name: 'T♣', number: 11 }
   ]
+
+  def initialize
+    @spades = SPADES
+    @hearts = HEARTS
+    @diamonds = DIAMONDS
+    @clubs = CLUBS
   end
 end
