@@ -31,6 +31,10 @@ module Interface
     puts '-------------------------------------------'
   end
 
+  def message_cards(player)
+    puts player == @dealer ? 'Карты дилера:' : 'Ваши карты:'
+  end
+
   def message(output)
     puts "🗩  #{output} 🗩"
   end
@@ -50,7 +54,6 @@ module Interface
   def main_info
     show_accounts
     message_bank
-    puts "🂠  Карт в колоде: #{@current_deck.deck.size}"
     show_cards
   end
 

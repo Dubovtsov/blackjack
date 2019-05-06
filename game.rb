@@ -2,6 +2,7 @@
 
 require_relative 'deck'
 require_relative 'user'
+require_relative 'hand'
 require_relative 'bank'
 require_relative 'interface'
 
@@ -41,7 +42,7 @@ class Game
       when '5'
         system 'clear'
         separator
-        Game.new(MENU).run
+        Game.new.run
       when '6'
         message('Будем рады видеть Вас снова!')
         break
@@ -71,12 +72,12 @@ class Game
   end
 
   def move
-    if @user.points < 20
+    if !@user.hand.losing
       user_move(1)
       show_cards @user
       message_dealer_move
       loading
-      if @dealer.points < 17
+      if @dealer.hand.points < 17
         dealer_move(1)
         show_cards @dealer
         show_menu
@@ -91,7 +92,7 @@ class Game
       message('Достаточно!')
       message_dealer_move
       loading
-      if @dealer.points < 17
+      if @dealer.hand.points < 17
         dealer_move(1)
         show_cards
       else
@@ -105,7 +106,7 @@ class Game
   def skip
     message_dealer_move
     loading
-    if @dealer.points < 17
+    if @dealer.hand.points < 17
       dealer_move(1)
       show_cards
       show_menu
@@ -118,30 +119,30 @@ class Game
   end
 
   def show
-    puts 'Карты дилера:'
+    message_cards @dealer
     separator
     withseparator(@dealer.cards_in_hand('show'))
     print "\n"
 
-    puts 'Ваши карты:'
+    message_cards @user
     separator
     withseparator(@user.cards_in_hand('show'))
     print "\n"
 
-    if @user.points > @dealer.points && @user.points <= 21 ||
-       @user.points <= 21 && @dealer.points > 21
+    if @user.hand.points > @dealer.hand.points && !@user.hand.losing ||
+       !@user.hand.losing && @dealer.hand.losing
       message('Вы выиграли!')
       @bank.gain(@user)
       show_accounts
       message_bank
-    elsif @user.points == @dealer.points && @user.points <= 21
+    elsif @user.hand.points == @dealer.hand.points && !@user.hand.losing
       message('Ничья!')
       @bank.return_bet(@user)
       @bank.return_bet(@dealer)
       message_bank
       show_accounts
-    elsif @user.points < @dealer.points && @dealer.points <= 21 ||
-          @user.points > @dealer.points && @dealer.points <= 21
+    elsif @user.hand.points < @dealer.hand.points && !@dealer.hand.losing ||
+          @user.hand.points > @dealer.hand.points && !@dealer.hand.losing
       message('Вы проиграли!')
       @bank.gain(@dealer)
       show_accounts
@@ -160,11 +161,11 @@ class Game
   def again
     if @user.cash >= 10 && @dealer.cash >= 10
       @current_deck = Deck.new
-      @user.hand = []
+      @user.hand = Hand.new
       user_move(2)
       @user.bet(@bank)
 
-      @dealer.hand = []
+      @dealer.hand = Hand.new
       dealer_move(2)
       @dealer.bet(@bank)
 
