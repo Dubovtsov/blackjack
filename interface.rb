@@ -43,7 +43,7 @@ class Interface
   end
 
   def message_cards(player)
-    puts player == @dealer ? 'Карты дилера:' : 'Ваши карты:'
+    puts player.name == 'Dealer' ? 'Карты дилера:' : 'Ваши карты:'
   end
 
   def message(output)
@@ -58,13 +58,12 @@ class Interface
     puts '🗩  Дилер пропускает ход 🗩'
   end
 
-  def message_bank
-    puts "🏛  Денег в банке: #{@bank.bank_amount}$"
+  def message_bank(bank_amount)
+    puts "🏛  Денег в банке: #{bank_amount}$"
   end
 
-  def show_account(user)
-    message("На вашем счёте: #{user}$") if user == @user
-    message("Счёт дилера: #{user}$")
+  def show_account(_message, _user_account)
+    puts "#{_message} #{_user_account}$"
   end
 
   def withseparator(_method_name)
@@ -73,32 +72,13 @@ class Interface
     separator
   end
 
-  def show_cards(user = nil)
-    if user == @user
-      puts 'У Вас в руке:'
-      separator
-      withseparator(@user.cards_in_hand('show'))
-      print "\n"
-    elsif user == @dealer
-      puts 'Карты дилера:'
-      separator
-      withseparator(@dealer.cards_in_hand)
-      print "\n"
-    else
-      puts 'У Вас в руке:'
-      separator
-      withseparator(@user.cards_in_hand('show'))
-      print "\n"
-      puts 'Карты дилера:'
-      separator
-      withseparator(@dealer.cards_in_hand)
-      print "\n"
-    end
+  def show_cards(cards_in_hand)
+    withseparator(cards_in_hand)
   end
 
   def show_menu
     puts 'Выберите действие(введите цифру от 1 до 5):'
-    @munu.each do |key, value|
+    @menu.each do |key, value|
       puts "#{key} 🖝  #{value}"
     end
   end
