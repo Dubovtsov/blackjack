@@ -2,13 +2,13 @@ Style/Documentation:
   Enabled: false
 
 Metrics/LineLength:
-  Max: 120
+  Max: 100
 
 Metrics/MethodLength:
-  Max: 40
+  Max: 25
 
 Metrics/BlockLength:
-  Max: 35
+  Max: 25
 
 AllCops:
   TargetRubyVersion: 2.6
@@ -38,4 +38,4 @@ Metrics/PerceivedComplexity:
   Max: 20
 
 Metrics/ClassLength:
-  Max: 400
+  Max: 300

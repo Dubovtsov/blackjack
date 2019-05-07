@@ -3,8 +3,9 @@
 require_relative 'deck'
 require_relative 'user'
 require_relative 'bank'
+require_relative 'game'
 
-module Interface
+class Interface
   MENU = {
     1 => 'Взять карту',
     2 => 'Пропустить ход',
@@ -13,6 +14,12 @@ module Interface
     5 => 'Начать заново',
     6 => 'Выйти из игры'
   }.freeze
+
+  attr_reader :menu
+
+  def initialize
+    @menu = MENU
+  end
 
   def loading
     3.times do
@@ -25,6 +32,10 @@ module Interface
   def user_input(input)
     puts "#{input}:"
     gets.chomp
+  end
+
+  def system_clear
+    system 'clear'
   end
 
   def separator
@@ -51,21 +62,15 @@ module Interface
     puts "🏛  Денег в банке: #{@bank.bank_amount}$"
   end
 
-  def main_info
-    show_accounts
-    message_bank
-    show_cards
+  def show_account(user)
+    message("На вашем счёте: #{user}$") if user == @user
+    message("Счёт дилера: #{user}$")
   end
 
   def withseparator(_method_name)
     _method_name
     print "\n"
     separator
-  end
-
-  def show_accounts
-    puts "На вашем счёте: #{@user.cash}$"
-    puts "Счёт дилера: #{@dealer.cash}$"
   end
 
   def show_cards(user = nil)
@@ -93,7 +98,7 @@ module Interface
 
   def show_menu
     puts 'Выберите действие(введите цифру от 1 до 5):'
-    @action_menu.each do |key, value|
+    @munu.each do |key, value|
       puts "#{key} 🖝  #{value}"
     end
   end

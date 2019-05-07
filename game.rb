@@ -7,60 +7,67 @@ require_relative 'bank'
 require_relative 'interface'
 
 class Game
-  include Interface
   attr_accessor :current_deck, :bank, :dealer
 
   def initialize
     @current_deck = Deck.new
     @bank = Bank.new
     @dealer = User.new('Dealer', 100)
-    @action_menu = MENU
+    # @action_menu = MENU
+    @interface = Interface.new
   end
 
   def run
-    system 'clear'
-    name = user_input('Как Вас зовут?')
-    message("Добро пожаловать в игру, #{name}!")
+    @interface.system_clear
+    name = @interface.user_input('Как Вас зовут?')
+    @interface.message("Добро пожаловать в игру, #{name}!")
     initial_conditions(name)
 
     loop do
       choise = gets.chomp
       case choise
       when '1'
-        system 'clear'
+        @interface.system_clear
         move
       when '2'
-        system 'clear'
+        @interfacesystem_clear
         skip
       when '3'
-        system 'clear'
+        @interfacesystem_clear
         show
       when '4'
-        system 'clear'
+        @interfacesystem_clear
         again
         break if @quit == 'break'
       when '5'
-        system 'clear'
-        separator
+        @interfacesystem_clear
+        @interface.separator
         Game.new.run
       when '6'
-        message('Будем рады видеть Вас снова!')
+        @interface.message('Будем рады видеть Вас снова!')
         break
       else
-        message('Неверный ввод!')
+        @interface.message('Неверный ввод!')
       end
     end
   end
 
   def initial_conditions(name)
-    separator
+    @interface.separator
     @user = User.new(name, 100)
     user_move(2)
     @user.bet(@bank)
     dealer_move(2)
     @dealer.bet(@bank)
     main_info
-    show_menu
+    @interface.show_menu
+  end
+
+  def main_info
+    @interface.show_account(@user.cash)
+    @interface.show_account(@dealer.cash)
+    message_bank
+    show_cards
   end
 
   def dealer_move(num_of_cards)
@@ -74,88 +81,88 @@ class Game
   def move
     if !@user.hand.losing
       user_move(1)
-      show_cards @user
-      message_dealer_move
-      loading
+      @interface.show_cards @user
+      @interface.message_dealer_move
+      @interface.loading
       if @dealer.hand.points < 17
         dealer_move(1)
-        show_cards @dealer
-        show_menu
+        interface.show_cards @dealer
+        @interface.show_menu
       else
-        separator
-        message_skip
+        @interface.separator
+        @interface.message_skip
         show_cards @dealer
-        show_menu
+        @interface.show_menu
       end
     else
-      separator
-      message('Достаточно!')
-      message_dealer_move
-      loading
+      @interface.separator
+      @interface.message('Достаточно!')
+      @interface.message_dealer_move
+      @interface.loading
       if @dealer.hand.points < 17
         dealer_move(1)
         show_cards
       else
-        message_skip
+        @interface.message_skip
         show_cards @dealer
       end
-      show_menu
+      @interface.show_menu
     end
   end
 
   def skip
-    message_dealer_move
-    loading
+    @interface.message_dealer_move
+    @interface.loading
     if @dealer.hand.points < 17
       dealer_move(1)
       show_cards
-      show_menu
+      @interface.show_menu
     else
-      separator
-      message_skip
+      @interface.separator
+      @interface.message_skip
       show_cards
-      show_menu
+      @interface.show_menu
     end
   end
 
   def show
-    message_cards @dealer
-    separator
-    withseparator(@dealer.cards_in_hand('show'))
+    @interface.message_cards @dealer
+    @interface.separator
+    @interface.withseparator(@dealer.cards_in_hand('show'))
     print "\n"
 
-    message_cards @user
-    separator
-    withseparator(@user.cards_in_hand('show'))
+    @interface.message_cards @user
+    @interface.separator
+    @interface.withseparator(@user.cards_in_hand('show'))
     print "\n"
 
     if @user.hand.points > @dealer.hand.points && !@user.hand.losing ||
        !@user.hand.losing && @dealer.hand.losing
-      message('Вы выиграли!')
+      @interface.message('Вы выиграли!')
       @bank.gain(@user)
       show_accounts
-      message_bank
+      @interface.message_bank
     elsif @user.hand.points == @dealer.hand.points && !@user.hand.losing
-      message('Ничья!')
+      @interface.message('Ничья!')
       @bank.return_bet(@user)
       @bank.return_bet(@dealer)
-      message_bank
+      @interface.message_bank
       show_accounts
     elsif @user.hand.points < @dealer.hand.points && !@dealer.hand.losing ||
           @user.hand.points > @dealer.hand.points && !@dealer.hand.losing
-      message('Вы проиграли!')
+      @interface.message('Вы проиграли!')
       @bank.gain(@dealer)
       show_accounts
-      message_bank
+      @interface.message_bank
     else
-      message('Перебор!')
+      @interface.message('Перебор!')
       @bank.return_bet(@user)
       @bank.return_bet(@dealer)
-      message_bank
+      @interface.message_bank
       show_accounts
     end
-    separator
-    show_menu
+    @interface.separator
+    @interface.show_menu
   end
 
   def again
@@ -169,10 +176,10 @@ class Game
       dealer_move(2)
       @dealer.bet(@bank)
 
-      main_info
-      show_menu
+      @interface.main_info
+      @interface.show_menu
     else
-      message('Недостаточно средств для ставки. Игра окончена!')
+      @interface.message('Недостаточно средств для ставки. Игра окончена!')
       @quit = 'break'
     end
   end
