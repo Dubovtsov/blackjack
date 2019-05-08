@@ -1,19 +1,20 @@
 class Hand
-  attr_accessor :hand
+  attr_accessor :cards
 
   def initialize
-    @hand = []
+    @cards = []
   end
 
-  def points
+  def scoring
     sum = 0
-    hand.each do |card, _index|
-      sum += card[:number]
+    cards.each do |card|
+      sum += card.points
+      # puts card
     end
     sum
   end
 
   def losing
-    points > 21
+    scoring > 21
   end
 end

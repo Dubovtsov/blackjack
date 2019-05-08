@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'deck'
+require_relative 'card'
 require_relative 'user'
 require_relative 'hand'
 require_relative 'bank'
@@ -13,7 +14,6 @@ class Game
     @current_deck = Deck.new
     @bank = Bank.new
     @dealer = User.new('Dealer', 100)
-    # @action_menu = MENU
     @interface = Interface.new
   end
 
@@ -92,7 +92,7 @@ class Game
       @interface.show_cards(@user.cards_in_hand('show'))
       @interface.message_dealer_move
       @interface.loading
-      if @dealer.hand.points < 17
+      if @dealer.hand.scoring < 17
         dealer_move(1)
         @interface.show_cards(@dealer.cards_in_hand)
         @interface.show_menu
@@ -107,7 +107,7 @@ class Game
       @interface.message('Достаточно!')
       @interface.message_dealer_move
       @interface.loading
-      if @dealer.hand.points < 17
+      if @dealer.hand.scoring < 17
         dealer_move(1)
         game_card_hands
       else
@@ -121,7 +121,7 @@ class Game
   def skip
     @interface.message_dealer_move
     @interface.loading
-    if @dealer.hand.points < 17
+    if @dealer.hand.scoring < 17
       dealer_move(1)
       game_card_hands
       @interface.show_menu
@@ -135,18 +135,18 @@ class Game
 
   def show
     game_output_info
-    if @user.hand.points > @dealer.hand.points && !@user.hand.losing ||
+    if @user.hand.scoring > @dealer.hand.scoring && !@user.hand.losing ||
        !@user.hand.losing && @dealer.hand.losing
       @interface.message('Вы выиграли!')
       @bank.gain(@user)
       @interface.show_account('На вашем счёте:', @user.cash)
       @interface.show_account('Счёт Дилера:', @dealer.cash)
       @interface.message_bank(@bank.bank_amount)
-    elsif @user.hand.points == @dealer.hand.points && !@user.hand.losing
+    elsif @user.hand.scoring == @dealer.hand.scoring && !@user.hand.losing
       @interface.message('Ничья!')
       game_return
-    elsif @user.hand.points < @dealer.hand.points && !@dealer.hand.losing ||
-          @user.hand.points > @dealer.hand.points && !@dealer.hand.losing
+    elsif @user.hand.scoring < @dealer.hand.scoring && !@dealer.hand.losing ||
+          @user.hand.scoring > @dealer.hand.scoring && !@dealer.hand.losing
       @interface.message('Вы проиграли!')
       @bank.gain(@dealer)
       @interface.show_account('На вашем счёте:', @user.cash)
