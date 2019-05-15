@@ -34,8 +34,6 @@ module Validation
       case validator[:type]
       when :presence
         raise 'Имя не должно быть пустым' if value.nil? || value == ''
-      when :type
-        raise 'Неверный тип' unless value.is_a? validator[:option]
       when :format
         raise 'Нет такой масти!' if value !~ validator[:option]
       end

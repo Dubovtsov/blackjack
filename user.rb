@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class User
+
   attr_reader :name
   attr_accessor :cash, :hand
 
-  def initialize(name, cash = 100)
+  def initialize(name, cash)
     @name = name
     @cash = cash
     @hand = Hand.new
@@ -17,7 +18,7 @@ class User
       if card.points == 11 && sum + card.points > 21
         card.points = 1
         @hand << card
-        cards.pop
+        deck.cards.pop
       else
         @hand.cards << card
         deck.cards.pop
@@ -26,18 +27,7 @@ class User
     @current_hand
   end
 
-  def cards_in_hand(show = nil)
-    @hand.cards.each do |card, _index|
-      if show.nil?
-        print ' | * | '
-      else
-        print "| #{card.name}#{card.suit} | "
-      end
-    end
-    print "сумма очков: #{@hand.scoring}" unless show.nil?
-  end
-
-  def bet(bank, money = 10)
+  def bet(bank, money)
     @cash -= money
     bank.bank_amount += money
   end

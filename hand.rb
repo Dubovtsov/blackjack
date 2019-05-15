@@ -9,7 +9,6 @@ class Hand
     sum = 0
     cards.each do |card|
       sum += card.points
-      # puts card
     end
     sum
   end

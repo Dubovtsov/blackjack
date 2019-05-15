@@ -7,7 +7,7 @@ class Card
   attr_reader :suit, :name
   attr_accessor :points
   validate :name, :presence
-  validate :suit, :format, /^(♠♥♦♣)$/
+  validate :suit, :format, /^[♠♥♦♣]+$/
 
   def initialize(suit, points, name)
     @suit = suit
@@ -15,5 +15,4 @@ class Card
     @name = name
     validate!
   end
-
 end
