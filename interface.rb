@@ -271,12 +271,10 @@ class Interface
       @current_deck = Deck.new
       @user.hand = Hand.new
       user_move(2)
-      @user.bet(@bank)
-
+      @user.bet(@bank, 10)
       @dealer.hand = Hand.new
       dealer_move(2)
-      @dealer.bet(@bank)
-
+      @dealer.bet(@bank, 10)
       main_info
       show_menu
     else

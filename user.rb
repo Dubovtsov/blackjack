@@ -17,7 +17,7 @@ class User
       sum = hand.scoring
       if card.points == 11 && sum + card.points > 21
         card.points = 1
-        @hand << card
+        @hand.cards << card
         deck.cards.pop
       else
         @hand.cards << card
