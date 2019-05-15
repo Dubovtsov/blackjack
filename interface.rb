@@ -166,7 +166,8 @@ class Interface
     dealer_move(2)
     @dealer.bet(@bank, 10)
     main_info
-    show_menu
+    game_card_hands
+    withseparator show_menu
   end
 
 
@@ -193,22 +194,20 @@ class Interface
 
   def move
     if !@user.hand.losing
-      user_move(1)
-      withseparator(cards_in_hand(@user, 'show'))
+      withseparator user_move(1)
+      withseparator cards_in_hand(@user, 'show')
       message_dealer_move
-      loading
+      withseparator loading
       if @dealer.hand.scoring < 17
         dealer_move(1)
-        withseparator(cards_in_hand(@dealer))
+        withseparator cards_in_hand(@dealer)
         show_menu
       else
-        separator
         message_skip
-        withseparator(cards_in_hand(@dealer))
+        withseparator cards_in_hand(@dealer)
         show_menu
       end
     else
-      separator
       message('Достаточно!')
       message_dealer_move
       loading
@@ -227,7 +226,6 @@ class Interface
     show_account('На вашем счёте:', @user.cash)
     show_account('Счёт Дилера:', @dealer.cash)
     message_bank(@bank.bank_amount)
-    game_card_hands
   end
 
   def show
@@ -236,9 +234,7 @@ class Interface
        !@user.hand.losing && @dealer.hand.losing
       message('Вы выиграли!')
       @bank.gain(@user)
-      show_account('На вашем счёте:', @user.cash)
-      show_account('Счёт Дилера:', @dealer.cash)
-      message_bank(@bank.bank_amount)
+      main_info
     elsif @user.hand.scoring == @dealer.hand.scoring && !@user.hand.losing
       message('Ничья!')
       game_return
@@ -246,9 +242,7 @@ class Interface
           @user.hand.scoring > @dealer.hand.scoring && !@dealer.hand.losing
       message('Вы проиграли!')
       @bank.gain(@dealer)
-      show_account('На вашем счёте:', @user.cash)
-      show_account('Счёт Дилера:', @dealer.cash)
-      message_bank(@bank.bank_amount)
+      main_info
     else
       message('Перебор!')
       game_return
@@ -276,6 +270,7 @@ class Interface
       dealer_move(2)
       @dealer.bet(@bank, 10)
       main_info
+      game_card_hands
       show_menu
     else
       message('Недостаточно средств для ставки. Игра окончена!')
