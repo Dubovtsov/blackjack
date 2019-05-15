@@ -104,10 +104,6 @@ class Interface
     separator
   end
 
-  # def show_cards(cards_in_hand)
-  #   withseparator(cards_in_hand)
-  # end
-
   def show_menu
     puts 'Выберите действие(введите цифру от 1 до 5):'
     @menu.each do |key, value|
@@ -169,7 +165,6 @@ class Interface
     game_card_hands
     withseparator show_menu
   end
-
 
   def cards_in_hand(player, show = nil)
     player.hand.cards.each do |card, _index|
