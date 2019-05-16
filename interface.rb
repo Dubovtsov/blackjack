@@ -117,32 +117,29 @@ class Interface
     if @dealer.hand.scoring < 17
       dealer_move(1)
       game_card_hands
-      show_menu
     else
       separator
       message_skip
       game_card_hands
-      show_menu
     end
+    show_menu
   end
 
   def game_return
     @bank.return_bet(@user)
     @bank.return_bet(@dealer)
-    message_bank(@bank.bank_amount)
-    show_account('На вашем счёте:', @user.cash)
-    show_account('Счёт Дилера:', @dealer.cash)
+    main_info
   end
 
   def game_output_info
     message_cards(@dealer)
     separator
-    withseparator(cards_in_hand(@dealer, 'show'))
+    withseparator cards_in_hand(@dealer, 'show')
     print "\n"
 
     message_cards(@user)
     separator
-    withseparator(cards_in_hand(@user, 'show'))
+    withseparator cards_in_hand(@user, 'show')
     print "\n"
   end
 
@@ -181,10 +178,10 @@ class Interface
   def game_card_hands
     puts 'У Вас в руке:'
     separator
-    withseparator(cards_in_hand(@user, 'show'))
+    withseparator cards_in_hand(@user, 'show')
     puts 'В руке Дилера:'
     separator
-    withseparator(cards_in_hand(@dealer))
+    withseparator cards_in_hand(@dealer)
   end
 
   def move
@@ -196,11 +193,9 @@ class Interface
       if @dealer.hand.scoring < 17
         dealer_move(1)
         withseparator cards_in_hand(@dealer)
-        show_menu
       else
         message_skip
         withseparator cards_in_hand(@dealer)
-        show_menu
       end
     else
       message('Достаточно!')
@@ -211,10 +206,10 @@ class Interface
         game_card_hands
       else
         message_skip
-        withseparator(cards_in_hand(@dealer))
+        withseparator cards_in_hand(@dealer)
       end
-      show_menu
     end
+    show_menu
   end
 
   def main_info
