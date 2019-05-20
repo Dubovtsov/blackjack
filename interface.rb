@@ -62,12 +62,12 @@ class Interface
     puts "🏛  Денег в банке: #{bank_amount}$"
   end
 
-  def show_account(_message, _user_account)
-    puts "#{_message} #{_user_account}$"
+  def show_account(message, user_account)
+    puts "#{message} #{user_account}$"
   end
 
-  def withseparator(_method_name)
-    _method_name
+  def withseparator(method_name)
+    method_name
     print "\n"
     separator
   end
