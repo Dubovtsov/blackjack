@@ -8,6 +8,8 @@ class Deck
     generate
   end
 
+  private
+
   def generate
     %w[♠ ♥ ♦ ♣].each do |suit|
       (2..10).each { |points| @cards << Card.new(suit, points, points.to_s) }

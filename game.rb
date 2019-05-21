@@ -22,8 +22,8 @@ class Game
   def run
     initial_conditions (@interface.start_game)
     @interface.main_info(@user, @dealer, @bank)
-    @interface.show_menu
     @interface.game_cards_hands(@user, @dealer)
+    @interface.show_menu
     loop do
       choise = gets.chomp
       case choise
@@ -49,6 +49,8 @@ class Game
         puts e.backtrace
     end
   end
+
+  private
 
   def initial_conditions(name)
     @user = User.new(name, 100)

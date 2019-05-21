@@ -111,7 +111,7 @@ class Interface
         print "| #{card.name}#{card.suit} | "
       end
     end
-    print "сумма очков: #{player.hand.scoring}" unless show.nil?
+    puts "сумма очков: #{player.hand.scoring}" unless show.nil?
   end
 
 

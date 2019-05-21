@@ -6,6 +6,7 @@ class Card
 
   attr_reader :suit, :name
   attr_accessor :points
+
   validate :name, :presence
   validate :suit, :format, /^[♠♥♦♣]+$/
 
