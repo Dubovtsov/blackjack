@@ -25,7 +25,7 @@ class Game
     @interface.game_cards_hands(@user, @dealer)
     @interface.show_menu
     loop do
-      choise = gets.chomp
+      choise = @interface.user_input
       case choise
       when '1'
         move

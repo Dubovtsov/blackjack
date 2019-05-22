@@ -29,7 +29,7 @@ class Interface
     puts ''
   end
 
-  def user_input(input)
+  def user_input(input = nil)
     puts "#{input}:"
     gets.chomp
   end
